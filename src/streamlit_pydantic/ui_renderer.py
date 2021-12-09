@@ -426,6 +426,26 @@ class InputUI:
             **{**streamlit_kwargs, "options": select_options, **overwrite_kwargs}
         )
 
+    def _render_selectfrom_list_input(
+        self, streamlit_app: Any, key: str, property: Dict
+    ) -> Any:
+        streamlit_kwargs = self._get_default_streamlit_input_kwargs(key, property)
+        overwrite_kwargs = self._get_overwrite_streamlit_kwargs(key, property)
+
+        select_options: List[str] = []
+
+        if property.get("init_value"):
+            select_options = property.get("init_value")
+        elif property.get("default"):
+            try:
+                select_options = property.get("default")
+            except Exception:
+                pass
+
+        return streamlit_app.multiselect(
+            **{**streamlit_kwargs, "options": select_options, **overwrite_kwargs}
+        )
+
     def _render_single_enum_input(
         self, streamlit_app: Any, key: str, property: Dict
     ) -> Any:
@@ -866,6 +886,9 @@ class InputUI:
 
         if schema_utils.is_multi_enum_property(property, self._schema_references):
             return self._render_multi_enum_input(streamlit_app, key, property)
+
+        if schema_utils.is_selectfrom_list(property):
+            return self._render_selectfrom_list_input(streamlit_app, key, property)
 
         if schema_utils.is_single_file_property(property):
             return self._render_single_file_input(streamlit_app, key, property)

@@ -42,6 +42,11 @@ class ExampleModel(BaseModel):
     multi_selection: Set[SelectionValue] = Field(
         ..., description="Allows multiple items from a set."
     )
+    multi_selection_from: Set[str] = Field(
+        ["blah", "blah2"],
+        format="multi-select-from",
+        description="Allows multiple items to be selected from a set of strings",
+    )
     read_only_text: str = Field(
         "Lorem ipsum dolor sit amet",
         description="This is a ready only text.",
@@ -70,6 +75,7 @@ instance = ExampleModel(
     long_text="This is some really long text from the INSTANCE",
     single_selection=SelectionValue.FOO,
     multi_selection=[SelectionValue.FOO, SelectionValue.BAR],
+    multi_selection_from=["fred", "bob"],
     read_only_text="INSTANCE read only text",
     nested_object=OtherData(text="nested data INSTANCE text", integer=66),
     int_list=[9, 99, 999],
