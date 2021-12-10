@@ -39,6 +39,11 @@ class ExampleModel(BaseModel):
     single_selection: SelectionValue = Field(
         ..., description="Only select a single item from a set."
     )
+    single_selection_from: Set[str] = Field(
+        ["blah", "blah2"],
+        format="single-select-from",
+        description="Allows a single item to be selected from a set of strings",
+    )
     multi_selection: Set[SelectionValue] = Field(
         ..., description="Allows multiple items from a set."
     )
@@ -74,6 +79,7 @@ instance = ExampleModel(
     some_boolean=True,
     long_text="This is some really long text from the INSTANCE",
     single_selection=SelectionValue.FOO,
+    single_selection_from=["fred", "bob"],
     multi_selection=[SelectionValue.FOO, SelectionValue.BAR],
     multi_selection_from=["fred", "bob"],
     read_only_text="INSTANCE read only text",

@@ -87,6 +87,18 @@ def is_selectfrom_list(property: Dict) -> bool:
         return property["items"]["type"] in ["string"]
 
 
+def is_single_selectfrom_list(property: Dict) -> bool:
+    if property.get("type") != "array":
+        return False
+
+    if property.get("uniqueItems") is not True:
+        # Only relevant if it is a set or other datastructures with unique items
+        return False
+
+    if property.get("format") == "single-select-from":
+        return property["items"]["type"] in ["string"]
+
+
 def is_single_enum_property(property: Dict, references: Dict) -> bool:
     if property.get("enum"):
         return True
